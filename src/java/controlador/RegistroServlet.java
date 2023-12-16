@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import modelo.Mensaje;
+import modelo.Births;
 import modelo.Registro;
 
 /**
@@ -82,14 +82,47 @@ public class RegistroServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String respuesta;
+        String responseID = "", responseName = "", responseWeight = "", responsePremature = "", responseSex = "", responseCenter = "";
 
-        String texto = request.getParameter("mensaje");
+        String id = request.getParameter("id");
+        String name = request.getParameter("name");
+        String weight = request.getParameter("weight");
+        String premature = request.getParameter("premature");
+        String sex = request.getParameter("sex");
+        String center = request.getParameter("center");
 
+        if (id.isEmpty()) {
+            responseID = "Debe ingresar id";
+        }
+        if (name.isEmpty()) {
+            responseName = "Debe ingresar nombre";
+        }
+        if (weight.isEmpty()) {
+            responseWeight = "Debe ingresar peso";
+        }
+        if (premature == null || premature.isEmpty()) {
+            System.out.println("Prematuro: " + premature);
+            responsePremature = "Debe ingresar prematuro";
+        }
+        if (sex == null || sex.isEmpty()) {
+            responseSex = "Debe ingresar sexo";
+        }
+        if (center.isEmpty()) {
+            responseCenter = "Debe ingresar centro";
+        }
+
+        System.out.println("ID: " + id);
+        System.out.println("Name: " + name);
+        System.out.println("Weight: " + weight);
+        System.out.println("Premature: " + premature);
+        System.out.println("Sex: " + sex);
+        System.out.println("Center: " + center);
+
+        /*
         if (texto.isEmpty()) {
             respuesta = "Favor, Ingrese un mensaje";
         } else {
-            Mensaje msg = new Mensaje();
+            Births msg = new Births();
             msg.setTexto(texto);
             msg.setFecha(new Date());
 
@@ -99,7 +132,7 @@ public class RegistroServlet extends HttpServlet {
                 registro = new Registro();
                 session.setAttribute("registro", registro);
             }
-            registro.agregarMensaje(msg);
+            registro.addBirth(msg);
 
             ServletContext application = request.getServletContext();
             Registro registroApp = (Registro) application.getAttribute("registro");
@@ -107,12 +140,19 @@ public class RegistroServlet extends HttpServlet {
                 registroApp = new Registro();
                 application.setAttribute("registro", registroApp);
             }
-            registroApp.agregarMensaje(msg);
+            registroApp.addBirth(msg);
 
             respuesta = "Tu mensaje se ingreso correctamente";
         }
+         */
 
-        request.setAttribute("respuesta", respuesta);
+        request.setAttribute("responseID", responseID);
+        request.setAttribute("responseName", responseName);
+        request.setAttribute("responseWeight", responseWeight);
+        request.setAttribute("responsePremature", responsePremature);
+        request.setAttribute("responseSex", responseSex);
+        request.setAttribute("responseCenter", responseCenter);
+
         RequestDispatcher despachador = request.getRequestDispatcher("/index.jsp");
         despachador.forward(request, response);
     }

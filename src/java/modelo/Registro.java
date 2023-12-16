@@ -13,17 +13,17 @@ import java.util.ArrayList;
  * @author Erick
  */
 public class Registro implements Serializable {
-    private ArrayList<Mensaje> lstMensajes;
+    private ArrayList<Births> births;
 
     public Registro() {
-        lstMensajes = new ArrayList<Mensaje>();
+        births = new ArrayList<Births>();
     }
 
-    public void agregarMensaje(Mensaje mensaje) {
-        lstMensajes.add(mensaje);
+    public boolean addBirth(Births n) {
+        return births.add(n);
     }
 
-    public ArrayList<Mensaje> getLstMensajes() {
-        return lstMensajes;
+    public ArrayList<Births> getBirths() {
+        return births;
     }
 }
