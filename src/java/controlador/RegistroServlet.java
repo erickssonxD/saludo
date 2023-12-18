@@ -93,22 +93,34 @@ public class RegistroServlet extends HttpServlet {
 
         if (id.isEmpty()) {
             responseID = "Debe ingresar id";
+        } else {
+            request.setAttribute("id", id);
         }
         if (name.isEmpty()) {
             responseName = "Debe ingresar nombre";
+        } else {
+            request.setAttribute("name", name);
         }
         if (weight.isEmpty()) {
             responseWeight = "Debe ingresar peso";
+        } else {
+            request.setAttribute("weight", weight);
         }
         if (premature == null || premature.isEmpty()) {
             System.out.println("Prematuro: " + premature);
             responsePremature = "Debe ingresar prematuro";
+        } else {
+            request.setAttribute("premature", premature);
         }
         if (sex == null || sex.isEmpty()) {
             responseSex = "Debe ingresar sexo";
+        } else {
+            request.setAttribute("sex", sex);
         }
-        if (center.isEmpty()) {
+        if (center == null || center.isEmpty()) {
             responseCenter = "Debe ingresar centro";
+        } else {
+            request.setAttribute("center", center);
         }
 
         System.out.println("ID: " + id);
