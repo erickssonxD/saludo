@@ -73,7 +73,6 @@ public class EliminarServlet extends HttpServlet {
         ServletContext application = request.getServletContext();
         Registro registroApp = (Registro) application.getAttribute("registro");
         if (registroApp == null) {
-            System.out.println("Creando registro...");
             registroApp = new Registro();
             application.setAttribute("registro", registroApp);
         }

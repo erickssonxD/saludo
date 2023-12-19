@@ -33,7 +33,7 @@
                             <td>${birth.peso}</td>
                             <td>${birth.prematuro ? 'Sí' : 'No'}</td>
                             <td>${birth.sexo == 'M' ? 'Masculino' : 'Femenino'}</td>
-                            <td><fmt:formatDate value="${birth.fechaNacimiento}" pattern="dd-MM-yyyy HH:MM:SS"/></td>
+                            <td><fmt:formatDate value="${birth.fechaNacimiento}" pattern="dd/MM/yyyy"/></td>
                             <td>Centro ${birth.centro}</td>
                             <td>
                                 <form action="${urlForm}" method="post">

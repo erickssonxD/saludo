@@ -28,10 +28,10 @@ public class Registro implements Serializable {
         for (int i = 0; i < births.size(); i++) {
             if (births.get(i).getId() == id) {
                 births.remove(i);
-                return true; // Removed the Birth with the specified ID
+                return true;
             }
         }
-        return false; // Birth with the specified ID was not found
+        return false;
     }
 
     public ArrayList<Birth> getBirths() {

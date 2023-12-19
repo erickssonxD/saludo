@@ -122,7 +122,6 @@ public class RegistroServlet extends HttpServlet {
             allInputSanitized = false;
         } else {
             center = Integer.parseInt(centerString);
-            System.out.println("center" + center);
             request.setAttribute("center", centerString);
         }
 
@@ -172,7 +171,6 @@ public class RegistroServlet extends HttpServlet {
     }// </editor-fold>
 
     private boolean isNumeric(String str) {
-        System.out.println("numeric" + str);
         return str != null && str.matches("[0-9.]+");
     }
     
