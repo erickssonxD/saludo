@@ -13,8 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import modelo.Births;
+import modelo.Birth;
 import modelo.Registro;
 
 /**
@@ -36,21 +35,7 @@ public class RegistroServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-
-        String name;
-
-        name = request.getParameter("nombre");
-
-        if (name.isEmpty()) {
-            name = "";
-        }
-
-        name = name.toUpperCase();
-
-        RequestDispatcher dispatcher = request.getRequestDispatcher("/mensaje.jsp");
-
-        request.setAttribute("mensaje", name);
-
+        RequestDispatcher dispatcher = request.getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -82,101 +67,121 @@ public class RegistroServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        String responseText = "";
+        
         String responseID = "", responseName = "", responseWeight = "", responsePremature = "", responseSex = "", responseCenter = "";
 
-        String id = request.getParameter("id");
+        String idString = request.getParameter("id");
+        int id = 0;
         String name = request.getParameter("name");
         String weight = request.getParameter("weight");
-        String premature = request.getParameter("premature");
-        String sex = request.getParameter("sex");
-        String center = request.getParameter("center");
+        String prematureString = request.getParameter("premature");
+        boolean premature = false;
+        String sexString = request.getParameter("sex");
+        char sex = ' ';
+        String centerString = request.getParameter("center");
+        int center = 0;
 
-        if (id.isEmpty()) {
+        boolean allInputSanitized = true;
+
+        if (idString.isEmpty() || !isNumeric(idString)) {
             responseID = "Debe ingresar id";
+            allInputSanitized = false;
         } else {
-            request.setAttribute("id", id);
+            id = Integer.parseInt(idString);
+            request.setAttribute("id", idString);
         }
         if (name.isEmpty()) {
             responseName = "Debe ingresar nombre";
+            allInputSanitized = false;
         } else {
             request.setAttribute("name", name);
         }
         if (weight.isEmpty()) {
             responseWeight = "Debe ingresar peso";
+            allInputSanitized = false;
         } else {
             request.setAttribute("weight", weight);
         }
-        if (premature == null || premature.isEmpty()) {
-            System.out.println("Prematuro: " + premature);
+        if (!isBoolean(prematureString)) {
             responsePremature = "Debe ingresar prematuro";
+            allInputSanitized = false;
         } else {
-            request.setAttribute("premature", premature);
+            premature = prematureString.equals("true");
+            request.setAttribute("premature", prematureString);
         }
-        if (sex == null || sex.isEmpty()) {
+        if (!isChar(sexString)) {
             responseSex = "Debe ingresar sexo";
+            allInputSanitized = false;
         } else {
-            request.setAttribute("sex", sex);
+            sex = sexString.charAt(0);
+            request.setAttribute("sex", sexString);
         }
-        if (center == null || center.isEmpty()) {
+        if (!isNumeric(centerString)) {
             responseCenter = "Debe ingresar centro";
+            allInputSanitized = false;
         } else {
-            request.setAttribute("center", center);
+            center = Integer.parseInt(centerString);
+            System.out.println("center" + center);
+            request.setAttribute("center", centerString);
         }
 
-        System.out.println("ID: " + id);
-        System.out.println("Name: " + name);
-        System.out.println("Weight: " + weight);
-        System.out.println("Premature: " + premature);
-        System.out.println("Sex: " + sex);
-        System.out.println("Center: " + center);
+        if (!allInputSanitized) {
+            request.setAttribute("responseID", responseID);
+            request.setAttribute("responseName", responseName);
+            request.setAttribute("responseWeight", responseWeight);
+            request.setAttribute("responsePremature", responsePremature);
+            request.setAttribute("responseSex", responseSex);
+            request.setAttribute("responseCenter", responseCenter);
 
-        /*
-        if (texto.isEmpty()) {
-            respuesta = "Favor, Ingrese un mensaje";
-        } else {
-            Births msg = new Births();
-            msg.setTexto(texto);
-            msg.setFecha(new Date());
+            responseText = "Hay errores en el input";
+            request.setAttribute("responseText", responseText);
+            RequestDispatcher despachador = request.getRequestDispatcher("/index.jsp");
+            despachador.forward(request, response);
 
-            HttpSession session = request.getSession();
-            Registro registro = (Registro) session.getAttribute("registro");
-            if (registro == null) {
-                registro = new Registro();
-                session.setAttribute("registro", registro);
-            }
-            registro.addBirth(msg);
-
-            ServletContext application = request.getServletContext();
-            Registro registroApp = (Registro) application.getAttribute("registro");
-            if (registroApp == null) {
-                registroApp = new Registro();
-                application.setAttribute("registro", registroApp);
-            }
-            registroApp.addBirth(msg);
-
-            respuesta = "Tu mensaje se ingreso correctamente";
+            return;
         }
-         */
 
-        request.setAttribute("responseID", responseID);
-        request.setAttribute("responseName", responseName);
-        request.setAttribute("responseWeight", responseWeight);
-        request.setAttribute("responsePremature", responsePremature);
-        request.setAttribute("responseSex", responseSex);
-        request.setAttribute("responseCenter", responseCenter);
+        Birth birth = new Birth(
+                id,
+                name,
+                weight,
+                new Date(),
+                premature,
+                sex,
+                center
+        );
 
+        ServletContext application = request.getServletContext();
+        Registro registroApp = (Registro) application.getAttribute("registro");
+        if (registroApp == null) {
+            registroApp = new Registro();
+            application.setAttribute("registro", registroApp);
+        }
+        registroApp.addBirth(birth);
+
+        responseText = "Se ha registrado el nacimiento correctamente";
+        request.setAttribute("responseText", responseText);
         RequestDispatcher despachador = request.getRequestDispatcher("/index.jsp");
         despachador.forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
     @Override
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private boolean isNumeric(String str) {
+        System.out.println("numeric" + str);
+        return str != null && str.matches("[0-9.]+");
+    }
+    
+    private boolean isBoolean(String str) {
+        return str != null && str.matches("[true|false]+");
+    }
+
+    private boolean isChar(String str) {
+        return str != null && str.matches("[M|F]+");
+    }
 
 }

@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Erick
  */
-public class Births implements Serializable {
+public class Birth implements Serializable {
     private int id;
     private String nombre;
     private String peso;
@@ -20,10 +20,10 @@ public class Births implements Serializable {
     private char sexo;
     private int centro;
 
-    public Births() {
+    public Birth() {
     }
 
-    public Births(int id, String nombre, String peso, Date fechaNacimiento, boolean prematuro, char sexo, int centro) {
+    public Birth(int id, String nombre, String peso, Date fechaNacimiento, boolean prematuro, char sexo, int centro) {
         this.id = id;
         this.nombre = nombre;
         this.peso = peso;

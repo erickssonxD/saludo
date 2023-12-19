@@ -3,6 +3,14 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    <servlet>
+        <servlet-name>EliminarServlet</servlet-name>
+        <servlet-class>controlador.EliminarServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EliminarServlet</servlet-name>
+        <url-pattern>/EliminarServlet</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

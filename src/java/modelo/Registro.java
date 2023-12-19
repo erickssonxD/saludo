@@ -13,17 +13,28 @@ import java.util.ArrayList;
  * @author Erick
  */
 public class Registro implements Serializable {
-    private ArrayList<Births> births;
+
+    private ArrayList<Birth> births;
 
     public Registro() {
-        births = new ArrayList<Births>();
+        births = new ArrayList<>();
     }
 
-    public boolean addBirth(Births n) {
+    public boolean addBirth(Birth n) {
         return births.add(n);
     }
 
-    public ArrayList<Births> getBirths() {
+    public boolean removeBirthByID(int id) {
+        for (int i = 0; i < births.size(); i++) {
+            if (births.get(i).getId() == id) {
+                births.remove(i);
+                return true; // Removed the Birth with the specified ID
+            }
+        }
+        return false; // Birth with the specified ID was not found
+    }
+
+    public ArrayList<Birth> getBirths() {
         return births;
     }
 }

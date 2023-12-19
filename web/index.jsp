@@ -41,12 +41,15 @@
                     <option value="" disabled
                     <c:if test="${center == null}">selected</c:if>
                         >--Seleccionar--</option>
-                    <option value="1" <c:if test="${center == 1}">selected</c:if>>Hospital 1</option>
-                <option value="2" <c:if test="${center == 2}">selected</c:if>>Hospital 2</option>
-                <option value="3 <c:if test="${center == 3}">selected</c:if>">Hospital 3</option>
+                    <option value="1" <c:if test="${center == 1}">selected</c:if>>Centro 1</option>
+                <option value="2" <c:if test="${center == 2}">selected</c:if>>Centro 2</option>
+                <option value="3" <c:if test="${center == 3}">selected</c:if>>Centro 3</option>
                 </select>
-                <input type="submit" value="Registrar" />git
+                <input type="submit" value="Registrar" />
             </form>
+        <c:if test="${not empty responseText}">
+            <h2><c:out value="${responseText}"/></h2>
+        </c:if>
         <c:if test="${not empty responseID}">
             <p><c:out value="${responseID}"/></p>
         </c:if>
